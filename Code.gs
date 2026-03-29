@@ -102,6 +102,26 @@ function processMarkdown(markdownText) {
     }
     bodyText = bodyText.replace(/<!--[\s\S]*?-->/g, "").trim();
 
+    // ==========================================
+    // ✅ Markdown特有の装飾記号のクリーンアップ処理
+    // ==========================================
+    // 1. コードブロック処理（``` を見やすいブロックに）
+    bodyText = bodyText.replace(/```[\s\S]*?```/g, function(match){
+      return "\n【コード】\n" + match.replace(/```[a-zA-Z]*\n?|```/g, "").trim() + "\n";
+    });
+    // 2. インラインコード（` `）を鉤括弧に変換
+    bodyText = bodyText.replace(/`(.*?)`/g, "「$1」");
+    
+    // 3. 太字や斜体の記号（** や *）を削除
+    bodyText = bodyText.replace(/\*\*(.*?)\*\*/g, "$1");
+    bodyText = bodyText.replace(/\*(.*?)\*/g, "$1");
+    
+    // 4. 小見出しの見栄え調整（# を図形に）
+    bodyText = bodyText.replace(/^###\s+(.*)/gm, "◆ $1");
+    bodyText = bodyText.replace(/^##\s+(.*)/gm, "■ $1");
+    
+    // 5. 箇条書きのハイフンを箇条書き用の黒ポチ（・）へ変換
+    bodyText = bodyText.replace(/^(\s*)-\s+/gm, "$1・ ");
     // タイトルも本文も何もない場合は無視
     if (!titleText && !bodyText) return;
 
