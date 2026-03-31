@@ -1,0 +1,38 @@
+name: "Copilot Setup Steps"
+
+# Automatically run the setup steps when they are changed to allow for easy validation,
+# and allow manual testing through the repository's "Actions" tab.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+
+    # Grant the permissions needed for Copilot to interact with issues and pull requests.
+    # These permissions apply to the setup job. Copilot's main session uses its own token
+    # whose permissions are determined by the repository's "Workflow permissions" setting
+    # (Settings → Actions → General → Workflow permissions → "Read and write permissions").
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Verify gh CLI is available
+        run: gh --version
+
+      - name: Verify gh CLI authentication
+        run: gh auth status
+        env:
+          GH_TOKEN: ${{ github.token }}
