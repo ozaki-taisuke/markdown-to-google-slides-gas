@@ -1,4 +1,10 @@
-# 配布方法・選択肢の調査ドキュメント
+# 配布方法・選択肢の調査ドキュメント（内部資料）
+
+> **⚠️ 内部資料 / Internal Research Document**
+>
+> このドキュメントは著者 ozaki-taisuke による **内部検討資料** です。現時点でリリース済みのツールは GAS版（`Code.gs`）のみです。Chrome拡張機能を含むその他の選択肢は開発・検討中であり、いずれも未リリースです。
+>
+> このドキュメントおよび `chrome-extension/` ディレクトリの内容は **著作権により保護** されています。Chrome Web Store への無断転載・公開は禁止されています。詳細は [`chrome-extension/LICENSE`](./chrome-extension/LICENSE) を参照してください。
 
 このドキュメントは、**Markdown to Google Slides** ツールを広く普及させるための各種配布方法・選択肢を比較・整理したものです。Chrome拡張機能だけでなく、様々なアプローチを検討するための参考資料として活用してください。
 

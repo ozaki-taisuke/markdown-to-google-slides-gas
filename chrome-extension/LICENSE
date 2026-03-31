@@ -1,0 +1,49 @@
+# Copyright Notice — Chrome Extension (Development Preview)
+
+Copyright (c) 2024 ozaki-taisuke. All rights reserved.
+
+## ⚠️ このディレクトリについて / About This Directory
+
+このディレクトリ（`chrome-extension/`）に含まれるすべてのファイルは、**開発中（未リリース）のプロトタイプ**です。
+
+**現時点では以下の行為を禁止します：**
+
+- Chrome Web Store または他のブラウザ拡張機能マーケットプレイスへの公開・配布
+- 本コードを用いた商用製品・サービスの提供
+- 著作権者の明示的な書面による許可なしに、第三者への再配布・再利用
+
+**許可されている行為：**
+
+- 個人的な学習・研究目的での参照・実験
+- フォークしたリポジトリ内での改変（ただし上記禁止行為は適用されます）
+
+---
+
+All files in this directory (`chrome-extension/`) are **unpublished development prototypes**.
+
+**The following are NOT permitted without explicit written consent from the copyright holder:**
+
+- Publishing or distributing to the Chrome Web Store or any other browser extension marketplace
+- Using this code to provide commercial products or services
+- Redistributing or sublicensing to any third party
+
+**The following ARE permitted:**
+
+- Personal study and research (non-commercial, private use)
+- Modification within a forked repository (above restrictions still apply)
+
+---
+
+**先行公開による著作権の確立について / Prior Art Statement:**
+
+このコードは ozaki-taisuke によって最初に作成・公開されたものです。
+Git のコミット履歴（タイムスタンプ付き）が著作権の先行性を証明します。
+
+This code was first authored and published by ozaki-taisuke.
+The timestamped Git commit history serves as proof of prior authorship.
+
+GitHub Repository: https://github.com/ozaki-taisuke/markdown-to-google-slides-gas
+
+---
+
+For licensing inquiries, contact the repository owner via GitHub Issues.

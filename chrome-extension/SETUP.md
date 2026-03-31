@@ -1,5 +1,11 @@
 # Chrome Extension セットアップ & Chrome Web Store 公開ガイド
 
+> **⚠️ 開発中・未リリース / Work In Progress — Not Yet Released**
+>
+> このディレクトリの内容は **開発中のプロトタイプ** です。現時点では Chrome Web Store への公開は行っていません。
+> 本コードの無断転載・マーケットプレイスへの無断公開は著作権侵害となります。
+> 著作権については [`chrome-extension/LICENSE`](./LICENSE) を参照してください。
+
 このドキュメントでは、**Markdown to Google Slides Chrome Extension** のセットアップ手順と Chrome Web Store への公開手順を説明します。
 
 ---
