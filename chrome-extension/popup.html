@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Markdown to Google Slides</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Google Sans", "Noto Sans JP", sans-serif;
+      background: #ffffff;
+      color: #202124;
+      width: 400px;
+      min-height: 540px;
+    }
+
+    .header {
+      background: #4285F4;
+      color: #ffffff;
+      padding: 14px 16px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #5f6368;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #202124;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #4285F4;
+      box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    }
+
+    textarea {
+      width: 100%;
+      height: 280px;
+      padding: 8px 10px;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: "Roboto Mono", "Courier New", monospace;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+      color: #202124;
+    }
+
+    textarea:focus {
+      border-color: #4285F4;
+      box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    }
+
+    button {
+      width: 100%;
+      padding: 11px;
+      background: #4285F4;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.15s;
+    }
+
+    button:hover:not(:disabled) {
+      background: #3367d6;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    button:disabled {
+      background: #a8c7fa;
+      cursor: not-allowed;
+    }
+
+    .status {
+      font-size: 13px;
+      text-align: center;
+      min-height: 20px;
+      padding: 4px 0;
+    }
+
+    .status.error {
+      color: #d93025;
+    }
+
+    .status.info {
+      color: #188038;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #80868b;
+      margin-top: 2px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #e8eaed;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-icon">📘</span>
+    <h1>Markdown to Google Slides</h1>
+  </div>
+
+  <div class="body">
+    <div>
+      <label for="presentationId">スライドのURL または プレゼンテーションID</label>
+      <input
+        type="text"
+        id="presentationId"
+        placeholder="https://docs.google.com/presentation/d/xxxxx/edit"
+      />
+      <p class="hint">GoogleスライドのURLをそのまま貼り付けるか、IDだけ入力してください。</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div>
+      <label for="mdText">Markdown テキスト（Marp形式）</label>
+      <textarea
+        id="mdText"
+        placeholder="---&#10;marp: true&#10;---&#10;&#10;# タイトル&#10;&#10;本文テキスト&#10;&#10;---&#10;&#10;# 2枚目のスライド&#10;&#10;・ポイント1&#10;・ポイント2"
+      ></textarea>
+    </div>
+
+    <button id="runBtn">スライドを自動生成する</button>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <script src="markdown.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
