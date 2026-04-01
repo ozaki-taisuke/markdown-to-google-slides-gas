@@ -26,11 +26,18 @@ function onOpen(e) {
 
 // 3. サイドバーを表示する
 function showSidebar() {
+  const sampleMarkdown = getSampleMarkdown();
+  // JSON.stringify でエスケープしてJS文字列リテラルとして安全に埋め込む
+  const sampleJson = JSON.stringify(sampleMarkdown);
+
   const html = HtmlService.createHtmlOutput(`
     <div style="font-family: sans-serif; padding: 10px;">
       <h3>Markdown流し込みツール</h3>
       <p style="font-size: 12px; color: #666;">Marp形式のテキストをペーストしてください。</p>
-      <textarea id="mdText" style="width: 100%; height: 500px; margin-bottom: 10px; padding: 5px; box-sizing: border-box;" placeholder="---&#10;marp: true&#10;---&#10;&#10;# タイトル..."></textarea>
+      <button onclick="insertSample()" style="width: 100%; padding: 8px; margin-bottom: 8px; background-color: #34A853; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+        ✨ サンプルフォーマットを挿入
+      </button>
+      <textarea id="mdText" style="width: 100%; height: 460px; margin-bottom: 10px; padding: 5px; box-sizing: border-box;" placeholder="---&#10;marp: true&#10;---&#10;&#10;# タイトル..."></textarea>
       <br>
       <button onclick="run()" style="width: 100%; padding: 10px; background-color: #4285F4; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
         スライドを自動生成する
@@ -38,6 +45,16 @@ function showSidebar() {
       <div id="status" style="margin-top: 15px; color: #555; text-align: center; font-weight: bold;"></div>
     </div>
     <script>
+      const SAMPLE = ${sampleJson};
+
+      function insertSample() {
+        const ta = document.getElementById('mdText');
+        if (ta.value && !confirm("入力済みのテキストを上書きしてサンプルを挿入しますか？")) {
+          return;
+        }
+        ta.value = SAMPLE;
+      }
+
       function run() {
         const text = document.getElementById('mdText').value;
         if (!text) {
@@ -61,6 +78,45 @@ function showSidebar() {
   .setTitle('Markdownからスライド生成');
 
   SlidesApp.getUi().showSidebar(html);
+}
+
+// 3b. サンプルMarkdownを返す（「サンプル挿入」ボタン用）
+function getSampleMarkdown() {
+  return [
+    "---",
+    "marp: true",
+    "---",
+    "",
+    "# スライド1: タイトル",
+    "",
+    "ここに本文を書きます。",
+    "",
+    "- 箇条書き1",
+    "- 箇条書き2",
+    "",
+    "<!-- スピーカーノートをここに書きます。HTMLコメント形式（Marp互換）で書いてください。 -->",
+    "",
+    "---",
+    "",
+    "# スライド2: コード例",
+    "",
+    "```javascript",
+    "const greeting = \"Hello, World!\";",
+    "console.log(greeting);",
+    "```",
+    "",
+    "<!-- このスライドでは、JavaScriptのサンプルコードを説明します。 -->",
+    "",
+    "---",
+    "",
+    "# スライド3: まとめ",
+    "",
+    "- ポイント1",
+    "- ポイント2",
+    "- ポイント3",
+    "",
+    "<!-- まとめのポイントを口頭で補足してください。 -->"
+  ].join("\n");
 }
 
 // 4. 実際の流し込み処理（バックグラウンドで実行される）
@@ -92,16 +148,25 @@ function processMarkdown(markdownText) {
     }
     
     // スピーカーノートの分離
-    const noteSplit = block.split("<!-- speaker_note -->");
-    if (noteSplit.length > 1) {
+    // 旧フォーマット: <!-- speaker_note --> 以降をノートとして扱う（後方互換）
+    // Marp互換フォーマット: HTMLコメント（<!-- ... -->）の内容をノートとして扱う
+    if (block.indexOf("<!-- speaker_note -->") !== -1) {
+      const noteSplit = block.split("<!-- speaker_note -->");
       bodyText = noteSplit[0];
-      // ノート内の不要なHTMLコメントを消去
-      notesText = noteSplit[1].replace(/<!--[\s\S]*?-->/g, "").trim(); 
+      notesText = noteSplit[1].replace(/<!--[\s\S]*?-->/g, "").trim();
     } else {
+      // Marp互換: HTMLコメントの内容をノートとして収集する
+      const noteMatches = block.match(/<!--([\s\S]*?)-->/g);
+      if (noteMatches) {
+        notesText = noteMatches
+          .map(function(c) { return c.replace(/^<!--\s*/, "").replace(/\s*-->$/, "").trim(); })
+          .filter(function(c) { return c.length > 0; })
+          .join("\n\n");
+      }
       bodyText = block;
     }
     
-    // 本文の掃除（タイトル行を消し、時計などのHTMLコメントを消去）
+    // 本文の掃除（タイトル行を消し、HTMLコメントを除去）
     if(titleMatch) {
       bodyText = bodyText.replace(titleMatch[0], ""); 
     }
