@@ -1,7 +1,7 @@
 name: "Copilot Setup Steps"
 
-# Automatically run the setup steps when they are changed to allow for easy validation,
-# and allow manual testing through the repository's "Actions" tab.
+# セットアップ手順が変更された際に自動的に実行して簡単に検証できるようにし、
+# リポジトリの「Actions」タブから手動でテストを実行できるようにします。
 on:
   workflow_dispatch:
   push:
@@ -12,14 +12,16 @@ on:
       - .github/workflows/copilot-setup-steps.yml
 
 jobs:
-  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  # ジョブ名は必ず `copilot-setup-steps` に設定する必要があります。
+  # 別の名前にするとCopilotに認識されません。
   copilot-setup-steps:
     runs-on: ubuntu-latest
 
-    # Grant the permissions needed for Copilot to interact with issues and pull requests.
-    # These permissions apply to the setup job. Copilot's main session uses its own token
-    # whose permissions are determined by the repository's "Workflow permissions" setting
-    # (Settings → Actions → General → Workflow permissions → "Read and write permissions").
+    # CopilotがIssueやPull Requestを操作するために必要な権限を付与します。
+    # これらの権限はこのセットアップジョブに適用されるものです。
+    # Copilotのメインセッションは独自のトークンを使用し、その権限はリポジトリの
+    # 「Workflow permissions」設定によって決定されます
+    # （Settings → Actions → General → Workflow permissions → "Read and write permissions"）。
     permissions:
       contents: read
       issues: write
