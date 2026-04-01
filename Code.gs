@@ -11,15 +11,20 @@
  * 5. 右側に出てくる枠（サイドバー）の中にMarkdownテキストを貼り付けて実行ボタンを押す
  */
 
-// 1. メニューバーにカスタムメニューを追加する
-function onOpen() {
+// 1. アドオンが Marketplace からインストールされたとき（初回）に呼び出される
+function onInstall(e) {
+  onOpen(e);
+}
+
+// 2. メニューバーにカスタムメニューを追加する
+function onOpen(e) {
   const ui = SlidesApp.getUi();
   ui.createMenu('📘 Markdown流し込み')
     .addItem('スライド自動生成ツールを開く', 'showSidebar')
     .addToUi();
 }
 
-// 2. サイドバーを表示する
+// 3. サイドバーを表示する
 function showSidebar() {
   const html = HtmlService.createHtmlOutput(`
     <div style="font-family: sans-serif; padding: 10px;">
@@ -58,7 +63,7 @@ function showSidebar() {
   SlidesApp.getUi().showSidebar(html);
 }
 
-// 3. 実際の流し込み処理（バックグラウンドで実行される）
+// 4. 実際の流し込み処理（バックグラウンドで実行される）
 function processMarkdown(markdownText) {
   const presentation = SlidesApp.getActivePresentation();
   
